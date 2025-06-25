@@ -1,0 +1,91 @@
+Paginas:
+
+************************************ USUARIO ***********************************
+Seccion:
+    Categorias:
+        • Perifericos:  Teclado
+                        Raton
+                        Mousepad
+                        Audifonos
+                        Microfonos
+                        Camaras
+        • Accesorios gamer:
+                        Soporte para Audifonos
+                        Luces LED
+                        Funkkkkopops
+        • Complementos:
+                        Soportes en general (microfonos, monitores y controles)
+                        Bocinas
+                        Controles
+        • Combos: 
+                        Perifericos
+                        Accesorios
+
+Home Page:
+    Productos destacados
+    Ofertas
+    Nuevos Productos
+    Informacion de el emprendimiento 
+
+Autenticacion:
+    Login
+    Register
+    Forgot password
+
+Carrito de compras:
+    Metodos de pago 
+    Cupones de descuento
+    Productos
+
+Catalogo:
+    Productos
+    Buscador con filtros
+    Buscar por nombre
+    Filtros por categoría, precio, marca, valoración
+
+Perfil del usuario:
+    Historial de compras
+    Dirección de envío / facturación
+    Métodos de pago guardados
+    Lista de deseos / favoritos
+
+Seguimiento de pedidos:
+    Estado del pedido (procesando, enviado, entregado)
+    Número de guía (tracking con transportadora)
+
+Facturación electrónica / Detalles del pedido:
+    Detalles de la orden
+    Generación de factura (PDF o resumen visual)
+
+Valoraciones y comentarios
+    Opiniones de usuarios por producto (con estrellas y texto)
+    Fotos de los compradores (opcional)
+
+Soporte y contacto
+    Formulario de contacto o chat en tiempo real
+    Sección de preguntas frecuentes (FAQ)
+
+Notificaciones / alertas
+    Email o mensajes al completar una compra
+    Confirmación de envío
+    Promociones especiales
+
+
+---OPCIONAL---
+Multilenguaje o multimoneda (si vas a vender fuera del país)
+    Cambio de idioma (ES / EN)
+    Mostrar precios en otras monedas
+
+************************************ ADMINISTRADOR ***********************************
+
+Sistema de inventario (si vas a administrar stock)
+    Mostrar "agotado"
+    Mostrar cuántas unidades quedan
+
+Panel de administrador (Dashboard)
+    Crear/editar/eliminar productos
+    Gestionar pedidos
+    Ver estadísticas de ventas
+
+
+
