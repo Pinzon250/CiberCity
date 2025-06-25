@@ -1,1 +1,4 @@
 fastapi[all]
+psycopg2
+SQLAlchemy
+python-dotenv
