@@ -88,4 +88,53 @@ Panel de administrador (Dashboard)
     Ver estadísticas de ventas
 
 
+Santiago (Persona 1) — Frontend del Usuario Final
+Responsabilidad: Todo lo que ve y usa el cliente en la tienda (comprar, navegar, registrar, valorar, etc.)
+
+🧩 Módulos asignados:
+
+Autenticación
+    ✓ Registro / Login / Forgot password
+    ✓ Sistema de JWT
+    Protección de rutas
+
+Catálogo público
+    Listar productos con filtros (categoría, precio, marca, etc.)
+    Búsqueda por nombre
+    Ver detalles del producto
+
+Carrito de compras
+    Agregar/quitar productos
+    Aplicar cupones
+    Simulación de métodos de pago
+
+Perfil del usuario
+    Actualizar perfil
+    Direcciones de envío
+    Métodos de pago guardados
+    Lista de deseos
+
+Historial de compras y seguimiento de pedidos
+    Ver órdenes anteriores
+    Ver estado (procesando, enviado, entregado)
+    Número de guía
+
+Valoraciones y comentarios
+    Crear valoración (estrellas + texto)
+    Subida opcional de imagen
+
+Facturación
+    Visualizar detalles del pedido
+    Generar factura en PDF
+
+Soporte y contacto
+    Formulario de contacto
+    Mostrar preguntas frecuentes (FAQ)
+
+Notificaciones
+    Confirmaciones por email
+    Promociones especiales
+
+
+
 

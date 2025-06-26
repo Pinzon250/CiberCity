@@ -25,5 +25,18 @@ class UserCreate(BaseModel):
 
 # Schema of User Login
 class UserLogin(BaseModel):
-    correo: str
+    correo: EmailStr
     contraseña: str   
+
+class UserOut(BaseModel):
+    nombres: str
+    apellidos: str
+    correo: EmailStr
+
+class ForgotPasswordRequest(BaseModel):
+    correo: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    nueva_contraseña: str
+
