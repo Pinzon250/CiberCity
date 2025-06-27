@@ -7,6 +7,7 @@ from app.models import users
 from passlib.context import CryptContext
 from app.routes.auth.auth import create_access_token, verify_password, hash_password
 
+from datetime import timedelta
 from jose import jwt, JWTError
 from fastapi import BackgroundTasks
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
@@ -28,8 +29,8 @@ conf = ConnectionConfig(
     MAIL_FROM=os.getenv("MAIL_FROM"),
     MAIL_PORT=587,
     MAIL_SERVER="smtp.gmail.com",
-    MAIL_TS=True,
-    MAIL_SSL=False,
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False,     
     USE_CREDENTIALS=True,
 )
 
@@ -45,8 +46,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(users.User).filter(users.User.correo == user.correo).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Correo ya registrado")
-    if user.cargo == "Estudiante" and not user.grupo:
-        raise HTTPException(status_code=400, detail="Grupo es obligatorio para estudiantes.")
+    
     # Create a new user
     new_user = UserModel (
         nombres=user.nombres,

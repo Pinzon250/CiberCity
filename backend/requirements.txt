@@ -1,4 +1,5 @@
 fastapi[all]
+fastapi-mail
 psycopg2
 SQLAlchemy
 python-dotenv
@@ -6,3 +7,4 @@ requests
 passlib[bcrypt]
 python-multipart
 python-jose[cryptography]
+authlib

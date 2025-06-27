@@ -1,0 +1,43 @@
+🧩 Módulos asignados:
+
+Autenticación
+    ✓ Registro / Login / Forgot password
+    ✓ Sistema de JWT
+    ✓ Protección de rutas
+
+Perfil del usuario
+    Actualizar perfil
+    Direcciones de envío
+    Métodos de pago guardados
+    Lista de deseos
+
+Catálogo público
+    Listar productos con filtros (categoría, precio, marca, etc.)
+    Búsqueda por nombre
+    Ver detalles del producto
+
+Carrito de compras
+    Agregar/quitar productos
+    Aplicar cupones
+    Simulación de métodos de pago
+
+Historial de compras y seguimiento de pedidos
+    Ver órdenes anteriores
+    Ver estado (procesando, enviado, entregado)
+    Número de guía
+
+Valoraciones y comentarios
+    Crear valoración (estrellas + texto)
+    Subida opcional de imagen
+
+Facturación
+    Visualizar detalles del pedido
+    Generar factura en PDF
+
+Soporte y contacto
+    Formulario de contacto
+    Mostrar preguntas frecuentes (FAQ)
+
+Notificaciones
+    Confirmaciones por email
+    Promociones especiales

@@ -1,25 +1,25 @@
 Paginas:
 
 ************************************ USUARIO ***********************************
-Seccion:
-    Categorias:
-        • Perifericos:  Teclado
-                        Raton
-                        Mousepad
-                        Audifonos
-                        Microfonos
-                        Camaras
-        • Accesorios gamer:
-                        Soporte para Audifonos
-                        Luces LED
-                        Funkkkkopops
-        • Complementos:
-                        Soportes en general (microfonos, monitores y controles)
-                        Bocinas
-                        Controles
-        • Combos: 
-                        Perifericos
-                        Accesorios
+Categorias:
+    • Perifericos:  
+                    Teclado
+                    Raton
+                    Mousepad
+                    Audifonos
+                    Microfonos
+                    Camaras
+    • Accesorios gamer:
+                    Soporte para Audifonos
+                    Luces LED
+                    Funkkkkopops
+    • Complementos:
+                    Soportes en general (microfonos, monitores y controles)
+                    Bocinas
+                    Controles
+    • Combos: 
+            Perifericos
+            Accesorios
 
 Home Page:
     Productos destacados
@@ -87,6 +87,7 @@ Panel de administrador (Dashboard)
     Gestionar pedidos
     Ver estadísticas de ventas
 
+✓
 
 Santiago (Persona 1) — Frontend del Usuario Final
 Responsabilidad: Todo lo que ve y usa el cliente en la tienda (comprar, navegar, registrar, valorar, etc.)
@@ -98,6 +99,12 @@ Autenticación
     ✓ Sistema de JWT
     Protección de rutas
 
+Perfil del usuario
+    Actualizar perfil
+    Direcciones de envío
+    Métodos de pago guardados
+    Lista de deseos
+
 Catálogo público
     Listar productos con filtros (categoría, precio, marca, etc.)
     Búsqueda por nombre
@@ -107,12 +114,6 @@ Carrito de compras
     Agregar/quitar productos
     Aplicar cupones
     Simulación de métodos de pago
-
-Perfil del usuario
-    Actualizar perfil
-    Direcciones de envío
-    Métodos de pago guardados
-    Lista de deseos
 
 Historial de compras y seguimiento de pedidos
     Ver órdenes anteriores
@@ -134,7 +135,3 @@ Soporte y contacto
 Notificaciones
     Confirmaciones por email
     Promociones especiales
-
-
-
-
