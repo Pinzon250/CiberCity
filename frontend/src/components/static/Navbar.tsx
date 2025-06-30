@@ -71,8 +71,6 @@ const Navbar = () => {
 
                         {isLoggedIn ? (
                             <div className="relative flex items-center gap-2" ref={menuRef}>
-
-                                {/* Botón de usuario */}
                                 <p className="hidden md:block text-sm font-semibold text-gray-700">
                                     {nombre}
                                 </p>
@@ -85,9 +83,7 @@ const Navbar = () => {
                                 >
                                     <User />
                                 </button>
-                                {/* Nombre visible solo en pantallas md+ */}
 
-                                {/* Menú desplegable */}
                                 {showMenu && (
                                     <div className="absolute right-0 top-12 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                                         <p className="md:hidden block text-sm font-semibold px-4 py-2 text-gray-700">
@@ -127,7 +123,7 @@ const Navbar = () => {
                                     }`}
                             />
                         </Link>
-                        {/* Botón Hamburguesa */}
+
                         <div className="md:hidden">
                             <button
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -143,12 +139,12 @@ const Navbar = () => {
                                 </svg>
                             </button>
                         </div>
-                    </div> {/* <-- Cierra el div de la barra superior */}
+                    </div>
 
-                    <div className={`md:hidden fixed inset-0 z-50 transition-all duration-300 ${mobileMenuOpen ? 'bg-black/60' : 'bg-transparent pointer-events-none'}`}>
-                        {/* Sidebar */}
+                    <div className={`md:hidden fixed inset-0 z-50 transition-all duration-600 ${mobileMenuOpen ? 'bg-black/60' : 'bg-transparent pointer-events-none'}`}>
+
                         <div
-                            className={`absolute right-0 justify-between top-0 h-full w-64 bg-white shadow-lg p-6 space-y-4 transform transition-transform duration-300
+                            className={`absolute right-0 justify-between top-0 h-full w-64 bg-white shadow-lg p-6 space-y-4 transform transition-transform duration-500
     ${mobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
                         >
                             <p className="text-lg font-semibold text-gray-800 mb-5">Menú</p>
@@ -161,8 +157,8 @@ const Navbar = () => {
                                     key={item.path}
                                     to={item.path}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className={`block text-lg font-medium ${location.pathname === item.path 
-                                        ? 'text-gray-200 font-bold px-3 py-2 bg-black rounded-xl' 
+                                    className={`block text-lg font-medium ${location.pathname === item.path
+                                        ? 'text-gray-200 font-bold px-3 py-2 bg-black rounded-xl'
                                         : 'text-gray-700 hover:text-black px-3 py-2'
                                         }`}
                                 >
