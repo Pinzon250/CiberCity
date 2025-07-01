@@ -11,6 +11,7 @@ import OAuthCallback from "./pages/auth/OAuthCallback";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPass from "./pages/auth/ForgotPass";
+import ResetPassword from "./pages/auth/ResetPass";
 
 // Pages
 import Home from "./pages/Home"
@@ -30,6 +31,7 @@ function App() {
         <Route path="/login" element={<Layout><Login /></Layout>}/>
         <Route path="/register" element={<Layout><Register /></Layout>}/>
         <Route path="/forgot-pass" element={<Layout><ForgotPass /></Layout>}/>
+        <Route path="/reset-password" element={<Layout><ResetPassword /></Layout>}/>
         <Route path="/oauth/callback" element={<OAuthCallback />} />
 
     </Routes>

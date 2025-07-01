@@ -5,12 +5,6 @@ Autenticación
     ✓ Sistema de JWT
     ✓ Protección de rutas
 
-Perfil del usuario
-    Actualizar perfil
-    Direcciones de envío
-    Métodos de pago guardados
-    Lista de deseos
-
 Catálogo público
     Listar productos con filtros (categoría, precio, marca, etc.)
     Búsqueda por nombre
@@ -20,6 +14,12 @@ Carrito de compras
     Agregar/quitar productos
     Aplicar cupones
     Simulación de métodos de pago
+
+Perfil del usuario
+    Actualizar perfil
+    Direcciones de envío
+    Métodos de pago guardados
+    Lista de deseos
 
 Historial de compras y seguimiento de pedidos
     Ver órdenes anteriores

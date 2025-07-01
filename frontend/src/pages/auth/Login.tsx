@@ -1,9 +1,10 @@
-import { useState} from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
+import { useAuth } from "../../hooks/auth/AuthContext";
 
 const Login = () => {
   const [correo, setCorreo] = useState<string>("");
@@ -11,6 +12,7 @@ const Login = () => {
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { login } = useAuth(); // ✅ Usamos login del contexto
 
   const handleGoogleLogin = () => {
     window.location.href = `${backendUrl}/auth/google`;
@@ -25,16 +27,17 @@ const Login = () => {
         contraseña,
       });
 
-      localStorage.setItem("token", res.data.access_token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      const token = res.data.access_token;
+      const user = res.data.user;
 
-      navigate("/");
+      login(token, user); // ✅ Actualiza el contexto
+      navigate("/");      // ✅ Redirige a home
     } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.detail || "Error desconocido");
       } else {
         setError("Correo o contraseña incorrectos");
-    }
+      }
     }
   };
 

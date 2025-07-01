@@ -82,9 +82,9 @@ def login_user(user_login: UserLogin, db: Session = Depends(get_db)):
         }
     }
 
-@router.post("/forget-password")
+@router.post("/forgot-password")
 async def forgot_password(data: ForgotPasswordRequest, background_task: BackgroundTasks, db: Session = Depends(get_db)):
-    user = db.query(UserModel).filter(UserModel.Correo == data.correo).first()
+    user = db.query(UserModel).filter(UserModel.correo == data.correo).first()
     if not user:
         raise HTTPException(status_code=404, detail="Correo no encontrado")
     
@@ -97,7 +97,7 @@ async def forgot_password(data: ForgotPasswordRequest, background_task: Backgrou
     message = MessageSchema(
         subject="Recuperar contraseña - CiberCity",
         recipients = [data.correo],
-        body= f"Hola {user.nombres}, \n\nUsa el siguiente enlace para reestablecer tu contraseña:\n\nEste enlace expirara en 15 minutos.",
+        body= f"Hola {user.nombres}, \n\nUsa el siguiente enlace para reestablecer tu contraseña: {reset_link} \n\nEste enlace expirara en 15 minutos.",
         subtype= "plain"
     )
 
@@ -112,14 +112,14 @@ def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
         payload = jwt.decode(data.token, SECRET_KEY, algorithms=[ALGORITHM])
         correo = payload.get("sub")
         if correo is None:
-            raise HTTPException(status_code = 400, details = "Token invalido")
+            raise HTTPException(status_code = 400, detail = "Token invalido")
         
     except JWTError:
-        raise HTTPException(status_code = 400, details = "Token invalido o expirado")
+        raise HTTPException(status_code = 400, detail = "Token invalido o expirado")
     
-    user = db.query(UserModel).filter(UserModel.correo == user.correo).first()
+    user = db.query(UserModel).filter(UserModel.correo == correo).first()
     if not user:
-        raise HTTPException(status_code=404, details= "Usuario no encontrado")
+        raise HTTPException(status_code=404, detail= "Usuario no encontrado")
     
     user.contraseña = hash_password(data.nueva_contraseña)
     db.commit()
