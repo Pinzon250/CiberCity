@@ -6,6 +6,7 @@ import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import Link from "next/link";
+import { registrarUsuario } from "@/libs/api/auth";
 
 const RegisterPage = () => {
   const [nombres, setNombres] = useState("");
@@ -23,28 +24,18 @@ const RegisterPage = () => {
   };
 
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
+  e.preventDefault();
+  setError("");
+  setSuccess("");
 
-    try {
-      await axios.post(`${backendUrl}/user/register`, {
-        nombres,
-        apellidos,
-        correo,
-        contraseña,
-      });
-
-      setSuccess("Cuenta creada exitosamente. Redirigiendo...");
-      setTimeout(() => router.push("/auth/login"), 2000);
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.detail || "Error desconocido");
-      } else {
-        setError("Ocurrió un error al registrarse");
-      }
-    }
-  };
+  try {
+    await registrarUsuario(nombres, apellidos, correo, contraseña);
+    setSuccess("Cuenta creada exitosamente. Redirigiendo...");
+    setTimeout(() => router.push("/auth/login"), 2000);
+  } catch (err: any) {
+    setError(err.message || "Ocurrió un error al registrarse");
+  }
+};
 
   return (
     <div className="m-auto relative py-3 sm:max-w-xl lg:py-10 sm:mx-auto h-full">

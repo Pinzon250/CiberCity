@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { guardarSesion } from "@/libs/api/auth";
 
 const OAuthCallbackPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -14,11 +15,7 @@ const OAuthCallbackPage = () => {
     const correo = searchParams.get("correo");
 
     if (token && nombre && correo) {
-      localStorage.setItem("token", token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ nombres: nombre, correo })
-      );
+      guardarSesion(token, { nombres: nombre, correo });
       router.push("/");
     } else {
       setError("No se recibió token desde el proveedor.");

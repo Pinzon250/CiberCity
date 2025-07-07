@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { resetPassword } from "@/libs/api/auth";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
@@ -34,22 +35,11 @@ const ResetPasswordPage = () => {
     }
 
     try {
-      const response = await fetch(`${backendUrl}/user/reset-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, nueva_contraseña: password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMensaje("Contraseña restablecida correctamente. Serás redirigido al login.");
-        setTimeout(() => router.push("/auth/login"), 2500);
-      } else {
-        setError(data.detail || "Error al restablecer la contraseña.");
-      }
-    } catch (err) {
-      setError("Error de conexión con el servidor.");
+      await resetPassword(token, password);
+      setMensaje("Constraseña restablecida correctamente. Serás redirigido al Login")
+      setTimeout(() => router.push("/auth/login"), 2500)
+    } catch (err: any) {
+      setError(err.message || "Error de conexión con el servidor,");
     }
   };
 

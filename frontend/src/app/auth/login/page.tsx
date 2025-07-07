@@ -7,6 +7,7 @@ import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import { useAuth } from "@/hooks/auth/AuthContext";
+import { loginUsuario } from "@/libs/api/auth";
 
 const LoginPage = () => {
   const [correo, setCorreo] = useState<string>("");
@@ -14,33 +15,22 @@ const LoginPage = () => {
   const [error, setError] = useState<string>("");
 
   const router = useRouter();
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const { login } = useAuth();
 
   const handleGoogleLogin = () => {
-    window.location.href = `${backendUrl}/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`;
   };
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
     try {
-      const res = await axios.post(`${backendUrl}/user/login`, {
-        correo,
-        contraseña,
-      });
-
-      const token = res.data.access_token;
-      const user = res.data.user;
-
-      login(token, user);
+      const { access_token, user } = await loginUsuario(correo, contraseña);
+      login(access_token, user);
       router.push("/");
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.detail || "Error desconocido");
-      } else {
-        setError("Correo o contraseña incorrectos");
-      }
+    } catch (err: any) {
+      setError(err.message || "Correo o contraseña incorrectos");
     }
   };
 

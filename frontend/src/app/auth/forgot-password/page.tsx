@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { forgotPassword } from "@/libs/api/auth";
 
 const ForgotPasswordPage = () => {
   const [correo, setCorreo] = useState("");
@@ -8,29 +9,18 @@ const ForgotPasswordPage = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMensaje("");
-    setError("");
+  e.preventDefault();
+  setMensaje("");
+  setError("");
 
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/forgot-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ correo }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMensaje("Se ha enviado un correo con instrucciones para restablecer tu contraseña.");
-        setCorreo("");
-      } else {
-        setError(data.detail || "Ocurrió un error. Inténtalo de nuevo.");
-      }
-    } catch (err) {
-      setError("Error de conexión con el servidor.");
-    }
-  };
+  try {
+    await forgotPassword(correo);
+    setMensaje("Se ha enviado un correo con instrucciones para restablecer tu contraseña.");
+    setCorreo("");
+  } catch (err: any) {
+    setError(err.message || "Error de conexión con el servidor.");
+  }
+};
 
   return (
     <div className="m-auto flex items-center justify-center h-full bg-gray-100 px-4">
