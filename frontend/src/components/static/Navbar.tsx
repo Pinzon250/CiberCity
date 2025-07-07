@@ -68,7 +68,7 @@ const Navbar = () => {
                   className={`px-2 py-1 size-10 border border-gray-300 rounded-full transition-colors cursor-pointer ${
                     showMenu
                       ? "bg-black text-gray-200"
-                      : "text-gray-900 hover:bg-gray-100 shadow-md"
+                      : "text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   <User />
