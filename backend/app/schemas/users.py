@@ -1,8 +1,5 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from typing import Optional
-
-# User Model (Class)
 
 # Schema of User
 class User(BaseModel):
