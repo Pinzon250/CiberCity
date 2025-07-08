@@ -85,7 +85,7 @@ const Navbar = () => {
               </div>
             ) : (
               <Link href="/auth/logreg">
-                <User className="px-2 py-1 size-10 border border-gray-300 rounded-md text-sm font-medium transition-colors cursor-pointer text-gray-900 hover:bg-gray-100 shadow-md" />
+                <User className="px-2 py-1 size-10 border border-gray-300 rounded-md text-sm font-medium transition-colors cursor-pointer text-gray-900 hover:bg-gray-100" />
               </Link>
             )}
 
