@@ -6,9 +6,9 @@ Autenticación
     ✓ Protección de rutas
 
 Catálogo público
-    Listar productos con filtros (categoría, precio, marca, etc.)
-    Búsqueda por nombre
-    Ver detalles del producto
+    ✓ Listar productos con filtros (categoría, precio, marca, etc.)
+    ✓ Búsqueda por nombre
+    ✓ Ver detalles del producto
 
 Carrito de compras
     Agregar/quitar productos
