@@ -18,7 +18,7 @@ class CarritoItemOut(BaseModel):
 class CarritoOut(BaseModel):
     id: int
     usuario_id: int
-    cupon_codigo: Optional[str]
+    cupon_codigo: Optional[str] = None
     items: List[CarritoItemOut]
 
     model_config = {
