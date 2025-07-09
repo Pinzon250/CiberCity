@@ -13,10 +13,10 @@ class Producto(Base):
     fecha_creacion = Column(DateTime, default=datetime.utcnow)
 
     # Relaciones
-    vendedor_id = Column(Integer, ForeignKey("vendedores.id"), nullable=False)
+    # vendedor_id = Column(Integer, ForeignKey("vendedores.id"), nullable=False)
     categoria_id = Column(Integer, ForeignKey("categorias.id"))
 
-    vendedor = relationship("User", back_populates="productos")  # Si usas User como vendedor
+    # vendedor = relationship("Vendedor", back_populates="productos")
     categoria = relationship("Categoria", back_populates="productos")
     atributos = relationship("ProductoAtributo", back_populates="producto", cascade="all, delete")
     imagenes = relationship("ImagenProducto", back_populates="producto", cascade="all, delete")

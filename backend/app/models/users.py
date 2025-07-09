@@ -18,4 +18,4 @@ class User(Base):
 
     carrito = relationship("Carrito", uselist=False, back_populates="usuario", cascade="all, delete-orphan")
     pedidos = relationship("Pedido", back_populates="usuario", cascade="all, delete-orphan")
-    vendedor = relationship("Vendedor", uselist=False, back_populates="usuario")
+    # vendedor = relationship("Vendedor", uselist=False, back_populates="usuario")
