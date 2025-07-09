@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.database.connection import get_db
 from app.models import Carrito, CarritoItem, Pedido
 from app.models.carrito import Cupon, CuponUso, PedidoItem
-from app.schemas.carrito import CarritoAgregarIn, AplicarCuponIn, SimularPagoIn, CarritoOut
+from app.schemas.carrito import CarritoAgregarIn, AplicarCuponIn, SimularPagoIn, CarritoOut, ActualizarCantidadIn
 
 from datetime import datetime
 from decimal import Decimal
@@ -31,7 +31,7 @@ def obtener_carrito(usuario_id: int, db: Session = Depends(get_db)):
             total -= descuento
 
     return {
-        "carrito": carrito,
+        "carrito": CarritoOut.from_orm(carrito),
         "total": float(total)
     }
 
@@ -60,19 +60,44 @@ def agregar_producto(data:CarritoAgregarIn, usuario_id: int, db: Session = Depen
     return {"msg" : "Producto agregado al carrito"}
 
 # Quitar producto
-@router.delete("/eliminar/{item_id}")
-def eliminar_item_carrito(item_id:int, usuario_id: int, db: Session = Depends(get_db)):
-    item = db.query(CarritoItem).join(Carrito).filter(
-        CarritoItem.id == item_id,
-        Carrito.usuario_id == usuario_id
+@router.put("/actualizar-cantidad")
+def actualizar_cantidad_producto(
+    data: ActualizarCantidadIn,
+    usuario_id: int,
+    db: Session = Depends(get_db)
+):
+    carrito = db.query(Carrito).filter_by(usuario_id=usuario_id).first()
+    if not carrito:
+        raise HTTPException(status_code=404, detail="No se encontro el carrito")
+
+    item = db.query(CarritoItem).filter_by(
+        carrito_id=carrito.id,
+        producto_id=data.producto_id
     ).first()
 
-    if not item:
-        raise HTTPException(status_code=404, detail="Item no encontrado")
+    if data.cantidad == 0:
+        if item:
+            db.delete(item)
+            db.commit()
+            return {"Mensaje":"Producto eliminado del carrito"}
+        else:
+            raise HTTPException(status_code=404, detail="Producto no encontrado en el carrito")
+        
+    if item:
+        item.cantidad = data.cantidad
+    else:
+        if data.cantidad > 0:
+            nuevo_item = CarritoItem(
+                carrito_id = carrito.id,
+                producto_id = data.producto_id,
+                cantidad = data.cantidad
+            )
+            db.add(nuevo_item)
+        else:
+            raise HTTPException(status_code=400, detail="Hubo un problema al actualizar la cantidad")
+        
     
-    db.delete(item)
-    db.commit()
-    return {"msg":"Item eliminado del carrito"}
+    return {"msg":"Cantidad Actualizada"}
 
 # Aplicar cupones
 @router.post("/cupon")

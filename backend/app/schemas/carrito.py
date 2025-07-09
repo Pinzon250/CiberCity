@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 from decimal import Decimal
 from datetime import datetime
@@ -20,11 +20,8 @@ class CarritoOut(BaseModel):
     usuario_id: int
     cupon_codigo: Optional[str] = None
     items: List[CarritoItemOut]
-    total: float
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = ConfigDict(from_attributes=True)
 
 class CarritoAgregarIn(BaseModel):
     producto_id: int
@@ -35,7 +32,6 @@ class AplicarCuponIn(BaseModel):
 
 class SimularPagoIn(BaseModel):
     metodo_pago: str
-
 
 # Pedidos
 class PedidoItemOut(BaseModel):
@@ -59,3 +55,7 @@ class PedidoOut(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+class ActualizarCantidadIn(BaseModel):
+    producto_id: int
+    cantidad: int
