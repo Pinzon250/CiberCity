@@ -3,61 +3,56 @@ import {
   FaHeart,
   FaTshirt,
   FaHome,
-  FaMobileAlt,
   FaRunning,
   FaAppleAlt,
   FaDog,
   FaChild,
-  FaMale,
-  FaFemale,
+  FaKeyboard,
 } from "react-icons/fa";
 
+import { SiRepublicofgamers } from "react-icons/si";
+import { GiBackpack } from "react-icons/gi";
+import { RiSoundModuleLine } from "react-icons/ri";
+
+
 export const categories = [
-  { name: "Beauty", icon: <FaHeart /> },
-  { name: "Electronic", icon: <FaMobileAlt /> },
-  { name: "Women’s Fashion", icon: <FaFemale /> },
-  { name: "Men’s Fashion", icon: <FaMale /> },
-  { name: "Girl’s Fashion", icon: <FaChild /> },
-  { name: "Boy’s Fashion", icon: <FaChild /> },
-  { name: "Health & Household", icon: <FaAppleAlt /> },
-  { name: "Home & Kitchen", icon: <FaHome /> },
-  { name: "Pet Supplies", icon: <FaDog /> },
-  { name: "Sports", icon: <FaRunning /> },
-  { name: "Best Seller", icon: <FaTshirt /> },
+  { name: "Perifericos", icon: <FaKeyboard /> },
+  { name: "Accesorios gamer", icon: <SiRepublicofgamers /> },
+  { name: "Complementos", icon: <RiSoundModuleLine /> },
+  { name: "Combos", icon: <GiBackpack /> },
+  { name: "Categoria 1", icon: <FaHeart /> },
+  { name: "Categoria 2", icon: <FaChild /> },
+  { name: "Categoria 3", icon: <FaAppleAlt /> },
+  { name: "Categoria 4", icon: <FaHome /> },
+  { name: "Categoria 5", icon: <FaDog /> },
+  { name: "Categoria 6", icon: <FaRunning /> },
+  { name: "Categoria 7", icon: <FaTshirt /> },
 ];
 
-export const brands = [
-  { name: "Zara", logo: "https://upload.wikimedia.org/wikipedia/commons/3/36/Zara_Logo.svg" },
-  { name: "Samsung", logo: "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" },
-  { name: "Oppo", logo: "https://upload.wikimedia.org/wikipedia/commons/5/5a/OPPO_Logo_2019.svg" },
-  { name: "Asus", logo: "https://upload.wikimedia.org/wikipedia/commons/5/52/AsusTek_logo.svg" },
-  { name: "Hurley", logo: "https://upload.wikimedia.org/wikipedia/commons/4/49/Hurley_Logo.svg" },
-  { name: "D&G", logo: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Dolce_%26_Gabbana_logo.svg" },
-];
 
 export const trendingProducts = [
   {
     id: 1,
-    title: "Men Slip On Shoes Casual with Arch Support Insoles",
-    price: 80.9,
-    image: "https://cdn.pixabay.com/photo/2015/09/02/12/45/shoes-918603_1280.jpg",
+    title: "Teclado Razer BlackWidow, Mecanico Tenkeyless",
+    price: 120.000,
+    image: "https://assets2.razerzone.com/images/pnx.assets/f83991a174978c3f88c089758ea9fa3c/blackwidow-v3-tenkeyless-usp1-mobile-v2.jpg",
   },
   {
     id: 2,
-    title: "Black Women's Coat Dress",
-    price: 45.95,
-    image: "https://cdn.pixabay.com/photo/2022/10/21/16/19/woman-7537462_1280.jpg",
+    title: "Cintas LED",
+    price: 50.000,
+    image: "https://media.falabella.com/falabellaCO/132522838_01/w=800,h=800,fit=pad",
   },
   {
     id: 3,
-    title: "Wireless Bluetooth Earbuds with Charging Case",
-    price: 25.99,
-    image: "https://cdn.pixabay.com/photo/2021/12/01/11/54/earphones-6835371_1280.jpg",
+    title: "Audifonos Touch True con Active Noise",
+    price: 60.000,
+    image: "https://www.steren.com.co/media/catalog/product/cache/0236bbabe616ddcff749ccbc14f38bf2/image/22545a64c/audifonos-bluetooth-touch-true-wireless-con-active-noise-cancelling-y-enviromental-noise-cancelling.jpg",
   },
   {
     id: 4,
-    title: "Modern Kitchen Blender with High Power",
-    price: 89.99,
-    image: "https://cdn.pixabay.com/photo/2020/12/03/21/52/blender-5800544_1280.jpg",
+    title: "Soporte de Brazo para monitor",
+    price: 100.000,
+    image: "https://http2.mlstatic.com/D_NQ_NP_825865-MLA74782156551_022024-O.webp",
   },
 ];
