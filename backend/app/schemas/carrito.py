@@ -20,6 +20,7 @@ class CarritoOut(BaseModel):
     usuario_id: int
     cupon_codigo: Optional[str] = None
     items: List[CarritoItemOut]
+    total: float
 
     model_config = {
         "from_attributes": True

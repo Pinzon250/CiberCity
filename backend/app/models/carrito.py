@@ -8,6 +8,7 @@ class Carrito(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     usuario_id = Column(Integer, ForeignKey("users.id"), unique=True)
+    cupon_codigo = Column(String, nullable=True)
 
     usuario = relationship("User", back_populates="carrito")
     items = relationship("CarritoItem", back_populates="carrito", cascade="all, delete-orphan")
