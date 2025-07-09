@@ -15,7 +15,10 @@ from app.routes.auth.auth import create_access_token, hash_password
 
 load_dotenv()
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/auth",
+    tags=["Google Auth"]
+)
 config = Config(".env")
 
 oauth = OAuth(config)
@@ -27,12 +30,12 @@ oauth.register(
     client_kwargs={"scope": "openid email profile"}
 )
 
-@router.get("/auth/google")
+@router.get("/google")
 async def login_via_google(request: Request):
     redirect_uri= "http://localhost:8000/auth/google/callback"
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
-@router.get("/auth/google/callback")
+@router.get("/google/callback")
 async def google_callback(request: Request, db: Session = Depends(get_db)):
     token = await oauth.google.authorize_access_token(request)
     resp = await oauth.google.get("https://openidconnect.googleapis.com/v1/userinfo", token=token)
