@@ -36,7 +36,7 @@ conf = ConnectionConfig(
 
 router = APIRouter(
     prefix="/user",
-    tags=["Users"]   
+    tags=["Auth users"]   
 )
 
 # Create a new user

@@ -72,24 +72,13 @@ Notificaciones / alertas
 
 
 ---OPCIONAL---
-Multilenguaje o multimoneda (si vas a vender fuera del país)
+Multilenguaje o multimoneda
     Cambio de idioma (ES / EN)
     Mostrar precios en otras monedas
 
 ************************************ ADMINISTRADOR ***********************************
 
-Sistema de inventario (si vas a administrar stock)
-    Mostrar "agotado"
-    Mostrar cuántas unidades quedan
-
-Panel de administrador (Dashboard)
-    Crear/editar/eliminar productos
-    Gestionar pedidos
-    Ver estadísticas de ventas
-
-✓
-
-Santiago (Persona 1) — Frontend del Usuario Final
+Frontend del Usuario Final
 Responsabilidad: Todo lo que ve y usa el cliente en la tienda (comprar, navegar, registrar, valorar, etc.)
 
 🧩 Módulos asignados:

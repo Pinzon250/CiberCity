@@ -1,3 +1,5 @@
+Frontend del Usuario Final
+Responsabilidad: Todo lo que ve y usa el cliente en la tienda (comprar, navegar, registrar, valorar, etc.)
 🧩 Módulos asignados:
 
 Autenticación
@@ -41,3 +43,45 @@ Soporte y contacto
 Notificaciones
     Confirmaciones por email
     Promociones especiales
+
+
+Administrador / Gestión Interna
+Responsabilidad: Control total de la tienda, gestión de productos, pedidos y monitoreo de ventas.
+
+🧩 Módulos asignados:
+Panel de administrador
+    Login de administrador
+    Dashboard con estadísticas
+    Middleware para roles
+
+Gestión de productos
+    Crear, editar y eliminar productos
+    Subida de imágenes
+    Definir combos y categorías
+    Marcar destacados, ofertas, nuevos
+
+Sistema de inventario
+    Control de stock
+    Mostrar “agotado”
+    Controlar niveles bajos
+
+Gestión de pedidos
+    Ver pedidos por usuario
+    Cambiar estados de pedido
+    Asignar número de guía
+
+Gestión de cupones
+    Crear / editar / eliminar cupones
+    Definir condiciones de uso
+
+Gestión de preguntas frecuentes
+    Crear y mantener las FAQs
+
+Estadísticas y reportes
+    Ventas por categoría
+    Productos más vendidos
+    Exportar reportes
+
+Configuraciones generales
+    Definir idiomas/monedas (si se habilita multilenguaje)
+    Subir logo / branding desde backend
