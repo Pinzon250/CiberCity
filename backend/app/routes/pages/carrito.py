@@ -4,10 +4,10 @@ from sqlalchemy.orm import Session
 from app.database.connection import get_db
 from app.models import Carrito, CarritoItem, Pedido
 from app.models.carrito import Cupon, CuponUso, PedidoItem
-from app.schemas.carrito import CarritoAgregarIn, AplicarCuponIn, SimularPagoIn, CarritoOut, ActualizarCantidadIn
+from app.schemas.carrito import CarritoAgregarIn, AplicarCuponIn, SimularPagoIn, CarritoOut
 
-from datetime import datetime
 from decimal import Decimal
+from datetime import datetime
 
 router = APIRouter(
     prefix="/Carrito",
@@ -59,45 +59,42 @@ def agregar_producto(data:CarritoAgregarIn, usuario_id: int, db: Session = Depen
     db.commit()
     return {"msg" : "Producto agregado al carrito"}
 
-# Quitar producto
-@router.put("/actualizar-cantidad")
-def actualizar_cantidad_producto(
-    data: ActualizarCantidadIn,
-    usuario_id: int,
-    db: Session = Depends(get_db)
-):
-    carrito = db.query(Carrito).filter_by(usuario_id=usuario_id).first()
+# Reducir cantidad de producto
+@router.put("/recudir/{producto_id}")
+def reducir_producto(producto_id: int, usuario_id: int, db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
     if not carrito:
-        raise HTTPException(status_code=404, detail="No se encontro el carrito")
-
-    item = db.query(CarritoItem).filter_by(
-        carrito_id=carrito.id,
-        producto_id=data.producto_id
-    ).first()
-
-    if data.cantidad == 0:
-        if item:
-            db.delete(item)
-            db.commit()
-            return {"Mensaje":"Producto eliminado del carrito"}
-        else:
-            raise HTTPException(status_code=404, detail="Producto no encontrado en el carrito")
-        
-    if item:
-        item.cantidad = data.cantidad
-    else:
-        if data.cantidad > 0:
-            nuevo_item = CarritoItem(
-                carrito_id = carrito.id,
-                producto_id = data.producto_id,
-                cantidad = data.cantidad
-            )
-            db.add(nuevo_item)
-        else:
-            raise HTTPException(status_code=400, detail="Hubo un problema al actualizar la cantidad")
-        
+        raise HTTPException(status_code=404, detail="Carrito no encontraod")
     
-    return {"msg":"Cantidad Actualizada"}
+    item = db.query(CarritoItem).filter_by(carrito_id = carrito.id, producto_id = producto_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Producto no esta en el carrito")
+    
+    if item.cantidad > 1:
+        item.cantidad -= 1
+        db.commit()
+        return {"msg": f"Cantidad reducida a {item.cantidad}"}
+
+    else:
+        db.delete(item)
+        db.commit()
+        return { "msg" : "Producto elimiando del carrito"}    
+
+# Eliminar producto
+@router.delete("eliminar/{producto_id}")
+def eliminar_producto(producto_id: int, usuario_id: int, db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
+    if not carrito:
+        raise HTTPException(status_code=404, detail="Carrito no encontrado")
+    
+    item = db.query(CarritoItem).filter_by(carrito_id = carrito.id, producto_id = producto_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Producto no esta en el carrito")
+    
+    db.delete(item)
+    db.commit()
+    return {"msg": "Producto eliminado del carrito"}
+
 
 # Aplicar cupones
 @router.post("/cupon")
@@ -128,4 +125,52 @@ def aplicar_cupon(data: AplicarCuponIn, usuario_id: int, db: Session = Depends(g
     return {
         "msg": "Cupon aplicado correctamente",
         "total_con_descuento": float(total)
+    }
+
+# Pagar
+@router.post("/pagar")
+def pagos(usuario_id: int, db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id= usuario_id).first()
+    if not carrito or not carrito.items:
+        raise HTTPException(status_code=404, detail="Carrito no encontrado o vacio")
+    
+    total = sum(item.cantidad * item.producto.precio for item in carrito.items)
+
+    # Aplicar cupon
+    if carrito.cupon_codigo:
+        cupon = db.query(Cupon).filter_by(codigo = carrito.cupon_codigo, activo= True).first()
+        if cupon and cupon.fecha_expiracion >= datetime.utcnow():
+            usos = db.query(CuponUso).filter_by(usuario_id=usuario_id, cupon_id=cupon.id).count()
+            if usos < cupon.max_usos_por_usuario:
+                descuento = total * (cupon.descuento / Decimal(100))
+                total -= total-descuento
+
+                uso = CuponUso(
+                    usuario_id=usuario_id,
+                    cupon_id = cupon.id,
+                    fecha_uso = datetime.utcnow()
+                )
+                db.add(uso)
+            else: 
+                carrito.cupon_codigo = None
+        else: 
+            carrito.cupon_codigo = None
+
+    pedido = Pedido(
+        usuario_id=usuario_id,
+        total=total,
+        pagado=True,
+        fecha_pedido = datetime.utcnow()
+    )
+    db.add(pedido)
+
+    db.query(CarritoItem).filter_by(carrito_id = carrito.id).delete()
+    carrito.cupon_codigo = None
+
+    db.commit()
+    return {
+        "msg": "Pago exitoso",
+        "Total_pagado":float(total),
+        "descuento_aplicado": float(descuento),
+        "pedido_id": pedido.id
     }
