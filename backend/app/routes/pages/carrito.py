@@ -119,7 +119,7 @@ def aplicar_cupon(data: AplicarCuponIn, usuario_id: int, db: Session = Depends(g
     db.commit()
 
     total = sum(item.producto.precio * item.cantidad for item in carrito.items)
-    descuento = total * (cupon.descuento / 100)
+    descuento = total * (cupon.descuento / 100) * total
     total -= descuento
 
     return {
@@ -127,50 +127,51 @@ def aplicar_cupon(data: AplicarCuponIn, usuario_id: int, db: Session = Depends(g
         "total_con_descuento": float(total)
     }
 
-# Pagar
+# Pagar (Refactorizar al final para usar un servicio de pago real)
 @router.post("/pagar")
-def pagos(usuario_id: int, db: Session = Depends(get_db)):
-    carrito = db.query(Carrito).filter_by(usuario_id= usuario_id).first()
-    if not carrito or not carrito.items:
-        raise HTTPException(status_code=404, detail="Carrito no encontrado o vacio")
+def pagos(data: SimularPagoIn, usuario_id: int, db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
+    if not carrito:
+        raise HTTPException(status_code=404, detail="Carrito no encontrado")
     
-    total = sum(item.cantidad * item.producto.precio for item in carrito.items)
+    total = Decimal("0.00")
+    for item in carrito.items:
+        total += item.producto.precio * item.cantidad
 
-    # Aplicar cupon
     if carrito.cupon_codigo:
-        cupon = db.query(Cupon).filter_by(codigo = carrito.cupon_codigo, activo= True).first()
-        if cupon and cupon.fecha_expiracion >= datetime.utcnow():
-            usos = db.query(CuponUso).filter_by(usuario_id=usuario_id, cupon_id=cupon.id).count()
-            if usos < cupon.max_usos_por_usuario:
-                descuento = total * (cupon.descuento / Decimal(100))
-                total -= total-descuento
-
-                uso = CuponUso(
-                    usuario_id=usuario_id,
-                    cupon_id = cupon.id,
-                    fecha_uso = datetime.utcnow()
-                )
-                db.add(uso)
-            else: 
-                carrito.cupon_codigo = None
-        else: 
-            carrito.cupon_codigo = None
-
+        cupon = db.query(Cupon).filter_by(codigo = carrito.cupon_codigo).first()
+        if cupon and cupon.activo:
+            descuento = total * (cupon.descuento / 100)
+            total -= descuento
+            uso = CuponUso(
+                usuario_id = usuario_id,
+                cupon_id = cupon.id
+            )
+            db.add(uso)
+    
     pedido = Pedido(
-        usuario_id=usuario_id,
-        total=total,
-        pagado=True,
-        fecha_pedido = datetime.utcnow()
-    )
+        usuario_id = usuario_id,
+        total= total,
+        pagado = True
+        )
     db.add(pedido)
-
-    db.query(CarritoItem).filter_by(carrito_id = carrito.id).delete()
-    carrito.cupon_codigo = None
-
     db.commit()
+    db.refresh(pedido)
+
+    for item in carrito.items:
+        pedido_item = PedidoItem(
+            pedido_id = pedido.id,
+            producto_id = item.producto_id,
+            cantidad = item.cantidad,
+            precio_unitario = item.producto.precio
+        )
+        db.add(pedido_item)
+    
+    db.query(CarritoItem).filter_by(carrito_id=carrito.id).delete()
+    carrito.cupon_codigo = None
+    db.commit()
+
     return {
-        "msg": "Pago exitoso",
-        "Total_pagado":float(total),
-        "descuento_aplicado": float(descuento),
-        "pedido_id": pedido.id
+        "msg": f"Pago simulado con exito usando el metodo {data.metodo_pago}",
+        "total" : float(total)
     }

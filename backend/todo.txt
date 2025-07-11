@@ -13,9 +13,9 @@ Catálogo público
     ✓ Ver detalles del producto
 
 Carrito de compras
-    Agregar/quitar productos
-    Aplicar cupones
-    Simulación de métodos de pago
+    ✓ Agregar/quitar productos
+    ✓ Aplicar cupones
+    ✓ Simulación de métodos de pago
 
 Perfil del usuario
     Actualizar perfil
