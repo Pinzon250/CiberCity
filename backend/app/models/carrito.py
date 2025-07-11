@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, ForeignKey, String  , Boolean, DateTime, DECIMAL
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app.database.connection import Base
+from app.database.base import Base
 
 class Carrito(Base):
     __tablename__ = "carritos"

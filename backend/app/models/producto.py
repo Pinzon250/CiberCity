@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime, Numeric
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app.database.connection import Base
+from app.database.base import Base
 
 class Producto(Base):
     __tablename__ = "productos"
@@ -28,3 +28,5 @@ class ImagenProducto(Base):
 
     producto_id = Column(Integer, ForeignKey("productos.id"))
     producto = relationship("Producto", back_populates="imagenes")
+
+

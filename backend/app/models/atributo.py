@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database.connection import Base
+from app.database.base import Base
 
 class Atributo(Base):
     __tablename__ = "atributos"

@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
+# Importar metadata
+from app.database.connection import Base
+
+target_metadata = Base.metadata
 # Cargar variables del entorno
 load_dotenv()
 
@@ -25,10 +29,6 @@ if SQLALCHEMY_DATABASE_URL:
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Importar metadata
-from app.database.connection import Base
-
-target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
