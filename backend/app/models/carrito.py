@@ -34,6 +34,8 @@ class Pedido(Base):
     total = Column(DECIMAL(10, 2), nullable=False)
     pagado = Column(Boolean, default=False)
     fecha_pedido = Column(DateTime, default=datetime.utcnow)
+    estado = Column(String, default="procesando")
+    numero_guia = Column(String, nullable=True)
 
     usuario = relationship("User", back_populates="pedidos")
     items = relationship("PedidoItem", back_populates="pedido", cascade="all, delete")

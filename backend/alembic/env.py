@@ -10,6 +10,9 @@ from alembic import context
 # Importar metadata
 from app.database.connection import Base
 
+# Importar modelos
+from app.models import *
+
 target_metadata = Base.metadata
 # Cargar variables del entorno
 load_dotenv()

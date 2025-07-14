@@ -18,31 +18,30 @@ Carrito de compras
     ✓ Simulación de métodos de pago
 
 Perfil del usuario
-    Actualizar perfil
-    Direcciones de envío
-    Métodos de pago guardados
-    Lista de deseos
+    ✓ Actualizar perfil
+    ✓ Direcciones de envío
+    ✓ Métodos de pago guardados
+    ✓ Lista de deseos
 
 Historial de compras y seguimiento de pedidos
-    Ver órdenes anteriores
-    Ver estado (procesando, enviado, entregado)
-    Número de guía
+    ✓ Ver órdenes anteriores
+    ✓ Ver estado (procesando, enviado, entregado)
+    ✓ Número de guía
 
 Valoraciones y comentarios
-    Crear valoración (estrellas + texto)
-    Subida opcional de imagen
-
-Facturación
-    Visualizar detalles del pedido
-    Generar factura en PDF
+    ✓ Crear valoración (estrellas + texto)
+    ✓ Subida opcional de imagen
 
 Soporte y contacto
-    Formulario de contacto
-    Mostrar preguntas frecuentes (FAQ)
+    ✓ Formulario de contacto
+    ✓ Mostrar preguntas frecuentes (FAQ)
 
-Notificaciones
-    Confirmaciones por email
-    Promociones especiales
+Notificaciones y validaciones
+    ✓ Confirmaciones por email
+
+Facturación
+    Visualizar detalles del pedido  
+    Generar factura en PDF
 
 
 Administrador / Gestión Interna
@@ -59,6 +58,7 @@ Gestión de productos
     Subida de imágenes
     Definir combos y categorías
     Marcar destacados, ofertas, nuevos
+    Promociones especiales
 
 Sistema de inventario
     Control de stock

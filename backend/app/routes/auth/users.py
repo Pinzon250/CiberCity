@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from app.models.users import User as UserModel
 from app.schemas.users import UserLogin, UserCreate, ForgotPasswordRequest, ResetPasswordRequest
 from app.database.connection import get_db
@@ -6,10 +6,12 @@ from sqlalchemy.orm import Session
 from app.models import users
 from passlib.context import CryptContext
 from app.routes.auth.auth import create_access_token, verify_password, hash_password
+from app.utils.emails import enviar_correo_verificacion
+from uuid import uuid4
 
 from datetime import timedelta
 from jose import jwt, JWTError
-from fastapi import BackgroundTasks
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from dotenv import load_dotenv
 import os
@@ -47,16 +49,22 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(status_code=400, detail="Correo ya registrado")
     
+    token_verificacion = str(uuid4())
+
     # Create a new user
     new_user = UserModel (
         nombres=user.nombres,
         apellidos=user.apellidos,
         correo=user.correo,
-        contraseña=hash_password(user.contraseña)
+        contraseña=hash_password(user.contraseña),
+        verificado = False,
+        token_verificacion = token_verificacion
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    enviar_correo_verificacion(new_user.correo, token_verificacion)
     return {"message": "User created successfully"}
 
 # Login user
@@ -80,6 +88,24 @@ def login_user(user_login: UserLogin, db: Session = Depends(get_db)):
             "correo": user.correo,
             "nombres": user.nombres,
         }
+    }
+
+# Login para Swagger 
+@router.post("/login-swagger")
+def login_swagger(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.correo == form_data.username).first()
+
+    if not user or not verify_password(form_data.password, user.contraseña):
+        raise HTTPException(
+            status_code = 404,
+            detail = "Credenciales invalidas"
+        )
+    
+    token = create_access_token(data={"sub": user.correo, "name": user.nombres})
+
+    return {
+        "access_token": token,
+        "token_type": "bearer"
     }
 
 @router.post("/forgot-password")
@@ -125,3 +151,19 @@ def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
     db.commit()
 
     return {"msg": "Contraseña restablecida correctamente"}
+
+# VERIFICACION DE CUENTA POR CORRREO
+@router.get("/verificar-cuenta")
+def verificar_cuenta(
+    token: str,
+    db: Session = Depends(get_db)
+):
+    usuario = db.query(UserModel).filter(token_verificacion = token).first()
+    if not usuario:
+        raise HTTPException(status_code=400, detail="Token invalido")
+    
+    usuario.verificado = True
+    usuario.token_verificacion = None
+    db.commit()
+
+    return {"msg": "Cuenta verificada correctamente"}

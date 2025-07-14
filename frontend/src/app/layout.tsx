@@ -2,7 +2,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/static/Navbar";
+import Component from "@/components/static/Navbar2";
 import Footer from "@/components/static/Footer";
 import { AuthProvider } from "@/hooks/auth/AuthContext";
 
@@ -25,7 +25,7 @@ export default function RootLayout({
         <AuthProvider>
           <div className="flex bg-gray-100">
             <div className="flex flex-col min-h-screen flex-1">
-              <Navbar />
+              <Component />
               <main className="flex-grow flex-1 relative">
                 {children}
               </main>

@@ -13,6 +13,9 @@ from app.database.connection import get_db
 from app.models.producto import Producto
 from app.models.categoria import Categoria
 from app.schemas.producto import ProductoOut, ListProducts
+from app.schemas.users import ValoracionOut
+from app.models.users import Valoraciones
+
 
 # Tag y Ruta inicial
 router = APIRouter(
@@ -75,3 +78,8 @@ def detalle_producto(
         raise HTTPException(status_code= 404, detail= "Producto no encontrado")
     
     return producto
+
+# ENDPOINT DE VALORACIONES
+@router.get("/producto/{producto_id}", response_model=List[ValoracionOut])
+def valoraciones_del_producto(producto_id: int, db: Session = Depends(get_db)):
+    return db.query(Valoraciones).filter_by(producto_id=producto_id).order_by(Valoraciones.fecha.desc()).all()

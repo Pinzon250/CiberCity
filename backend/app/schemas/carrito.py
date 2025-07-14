@@ -50,6 +50,8 @@ class PedidoOut(BaseModel):
     total: Decimal
     pagado: bool
     fecha_pedido: datetime
+    estado: Optional[str] = None
+    numero_guia: Optional[str] = None  
     items: List[PedidoItemOut]
 
     model_config = {

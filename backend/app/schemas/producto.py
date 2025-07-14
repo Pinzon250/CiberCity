@@ -38,4 +38,25 @@ class ListProducts(BaseModel):
     model_config = {
         "from_attributes" : True
     }
+
+class PromocionCreate(BaseModel):
+    titulo: str
+    descripcion: str
+    descuento_procentaje: str
+    fecha_inicio: datetime
+    fecha_fin: datetime
+    producto_ids: Optional[List[int]] = []
+    categoria_ids: Optional[List[int]] = []
     
+class PromocionOut(BaseModel):
+    id: int
+    titulo: str
+    descripcion: str
+    descuento_porcentaje: float
+    fecha_inicio: datetime
+    fecha_fin: datetime
+    activa: bool
+
+    model_config = {
+        "from_attributes": True
+    }

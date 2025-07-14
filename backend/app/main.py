@@ -5,7 +5,7 @@ from starlette.middleware.sessions import SessionMiddleware
 import os
 
 # Rutas
-from app.routes.pages import catalogo, carrito
+from app.routes.pages import catalogo, carrito, usuarios, pedidos, soporte
 from app.routes.auth import users, google
 from app.database.connection import Base, engine
 
@@ -36,3 +36,6 @@ app.include_router(users.router)
 app.include_router(google.router)
 app.include_router(catalogo.router)
 app.include_router(carrito.router)
+app.include_router(usuarios.router)
+app.include_router(pedidos.router)
+app.include_router(soporte.router)

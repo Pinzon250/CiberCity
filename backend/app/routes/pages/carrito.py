@@ -2,22 +2,26 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_db
-from app.models import Carrito, CarritoItem, Pedido
+from app.models import Carrito, CarritoItem, Pedido, User
+
+from app.schemas.carrito import PedidoOut
 from app.models.carrito import Cupon, CuponUso, PedidoItem
 from app.schemas.carrito import CarritoAgregarIn, AplicarCuponIn, SimularPagoIn, CarritoOut
+from app.routes.auth.auth import get_current_user
 
 from decimal import Decimal
+from typing import List
 from datetime import datetime
 
 router = APIRouter(
-    prefix="/Carrito",
+    prefix="/carrito",
     tags=["Carrito"]
 )
 
 # Ver el carrito actual
 @router.get("/", response_model=dict)
-def obtener_carrito(usuario_id: int, db: Session = Depends(get_db)):
-    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
+def obtener_carrito(usuario: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario.id).first()
     if not carrito:
         raise HTTPException(status_code=404, detail="Carrito no encontrado")
     
@@ -37,10 +41,10 @@ def obtener_carrito(usuario_id: int, db: Session = Depends(get_db)):
 
 # Agregar producto
 @router.post("/agregar")
-def agregar_producto(data:CarritoAgregarIn, usuario_id: int, db: Session = Depends(get_db)):
-    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
+def agregar_producto(data:CarritoAgregarIn, usuario: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario.id).first()
     if not carrito:
-        carrito = Carrito(usuario_id = usuario_id)
+        carrito = Carrito(usuario_id = usuario.id)
         db.add(carrito)
         db.commit()
         db.refresh(carrito)
@@ -60,9 +64,9 @@ def agregar_producto(data:CarritoAgregarIn, usuario_id: int, db: Session = Depen
     return {"msg" : "Producto agregado al carrito"}
 
 # Reducir cantidad de producto
-@router.put("/recudir/{producto_id}")
-def reducir_producto(producto_id: int, usuario_id: int, db: Session = Depends(get_db)):
-    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
+@router.put("/reducir/{producto_id}")
+def reducir_producto(producto_id: int, usuario: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario.id).first()
     if not carrito:
         raise HTTPException(status_code=404, detail="Carrito no encontraod")
     
@@ -81,9 +85,9 @@ def reducir_producto(producto_id: int, usuario_id: int, db: Session = Depends(ge
         return { "msg" : "Producto elimiando del carrito"}    
 
 # Eliminar producto
-@router.delete("eliminar/{producto_id}")
-def eliminar_producto(producto_id: int, usuario_id: int, db: Session = Depends(get_db)):
-    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
+@router.delete("/eliminar/{producto_id}")
+def eliminar_producto(producto_id: int, usuario: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario.id).first()
     if not carrito:
         raise HTTPException(status_code=404, detail="Carrito no encontrado")
     
@@ -98,7 +102,7 @@ def eliminar_producto(producto_id: int, usuario_id: int, db: Session = Depends(g
 
 # Aplicar cupones
 @router.post("/cupon")
-def aplicar_cupon(data: AplicarCuponIn, usuario_id: int, db: Session = Depends(get_db)):
+def aplicar_cupon(data: AplicarCuponIn, usuario: User = Depends(get_current_user), db: Session = Depends(get_db)):
     cupon = db.query(Cupon).filter_by(codigo=data.codigo).first()
 
     if not cupon or not cupon.activo:
@@ -107,11 +111,11 @@ def aplicar_cupon(data: AplicarCuponIn, usuario_id: int, db: Session = Depends(g
     if cupon.fecha_expiracion and cupon.fecha_expiracion < datetime.utcnow():
         raise HTTPException(status_code=400, detail="Cupon expirado")
     
-    usos_usuario = db.query(CuponUso).filter_by(usuario_id = usuario_id, cupon_id = cupon.id).count()
+    usos_usuario = db.query(CuponUso).filter_by(usuario_id = usuario.id, cupon_id = cupon.id).count()
     if usos_usuario >= cupon.max_usos_por_usuario:
         raise HTTPException(status_code=400, detail="Limite de uso alcanzado para este cupon")
     
-    carrito = db.query(Carrito).filter_by(usuario_id=usuario_id).first()
+    carrito = db.query(Carrito).filter_by(usuario_id=usuario.id).first()
     if not carrito:
         raise HTTPException(status_code=404, detail="Carrito no encontrado")
     
@@ -129,8 +133,8 @@ def aplicar_cupon(data: AplicarCuponIn, usuario_id: int, db: Session = Depends(g
 
 # Pagar (Refactorizar al final para usar un servicio de pago real)
 @router.post("/pagar")
-def pagos(data: SimularPagoIn, usuario_id: int, db: Session = Depends(get_db)):
-    carrito = db.query(Carrito).filter_by(usuario_id = usuario_id).first()
+def pagos(data: SimularPagoIn, usuario: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    carrito = db.query(Carrito).filter_by(usuario_id = usuario.id).first()
     if not carrito:
         raise HTTPException(status_code=404, detail="Carrito no encontrado")
     
@@ -144,13 +148,13 @@ def pagos(data: SimularPagoIn, usuario_id: int, db: Session = Depends(get_db)):
             descuento = total * (cupon.descuento / 100)
             total -= descuento
             uso = CuponUso(
-                usuario_id = usuario_id,
+                usuario_id = usuario.id,
                 cupon_id = cupon.id
             )
             db.add(uso)
     
     pedido = Pedido(
-        usuario_id = usuario_id,
+        usuario_id = usuario.id,
         total= total,
         pagado = True
         )

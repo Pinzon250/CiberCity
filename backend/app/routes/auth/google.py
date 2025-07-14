@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuth
 from starlette.config import Config
 from dotenv import load_dotenv
 import os
+
+from uuid import uuid4
 
 # Db config
 from sqlalchemy.orm import Session
@@ -12,6 +14,7 @@ from app.models.users import User as UserModel
 
 # Auth
 from app.routes.auth.auth import create_access_token, hash_password
+from app.utils.emails import enviar_correo_verificacion
 
 load_dotenv()
 
@@ -51,15 +54,24 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
     user = db.query(UserModel).filter(UserModel.correo == correo).first()
 
     if not user:
+        token_verificacion = str(uuid4())
         user = UserModel(
             nombres= nombres,
             apellidos= apellidos,
             correo=correo,
-            contraseña=hash_password("GOOGLE_AUTH" + correo)
+            contraseña=hash_password("GOOGLE_AUTH" + correo),
+            verificado=False,
+            token_verificacion=token_verificacion
         )
         db.add(user)
         db.commit()
         db.refresh(user)
+
+        enviar_correo_verificacion(user.correo, token_verificacion)
+
+    if not user.verificado:
+        raise HTTPException(status_code=403, detail="Debes verificar tu correo para acceder")
+    
 
     jwt_token = create_access_token(data={"sub": user.correo, "name": user.nombres})
 
@@ -69,5 +81,5 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
         f"&nombre={user.nombres}"
         f"&correo={user.correo}"
     )
-    print("USER INFO:", user_info)
+    
     return RedirectResponse(url = redirect_url)

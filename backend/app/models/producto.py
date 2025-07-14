@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime, Nume
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database.base import Base
+from .soporte import promocion_producto
 
 class Producto(Base):
     __tablename__ = "productos"
@@ -17,6 +18,8 @@ class Producto(Base):
     categoria_id = Column(Integer, ForeignKey("categorias.id"))
 
     # vendedor = relationship("Vendedor", back_populates="productos")
+    promociones = relationship("Promocion", secondary=promocion_producto, back_populates="productos")
+    valoraciones = relationship("Valoraciones", back_populates="producto", cascade="all, delete")
     categoria = relationship("Categoria", back_populates="productos")
     atributos = relationship("ProductoAtributo", back_populates="producto", cascade="all, delete")
     imagenes = relationship("ImagenProducto", back_populates="producto", cascade="all, delete")
