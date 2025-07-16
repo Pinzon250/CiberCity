@@ -20,7 +20,7 @@ const images = [
 export default function Home() {
   return (
     <div>
-      <div className="h-30 bg-zinc-900 w-screen overflow-hidden">
+      {/* <div className="h-30 bg-zinc-900 w-screen overflow-hidden">
         <div className="h-full max-w-7xl w-full mx-auto">
           <div className="grid grid-cols-4 grid-rows-1 gap-4 max-w-xl m-auto md:max-w-7xl">
             <div className="text-white md:h-30">
@@ -59,7 +59,7 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Carrusel */}
+          {/* Carrusel *
           <div className="col-span-3 md:h-124 pt-10">
             <div className="rounded-xl h-full">
               <Swiper
@@ -82,34 +82,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto mt-15">
-        <div className="border-b px-8 border-gray-300 font-semibold flex items-center">
-          <IoMdTrendingUp className="text-4xl m-2" />
-          <h1 className="text-3xl">Productos en tendencia</h1>
-        </div>
-
-
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {trendingProducts.map((prod) => (
-              <div
-                key={prod.id}
-                className="rounded-xl h-100"
-              >
-                <img
-                  src={prod.image}
-                  alt={prod.title}
-                  className="w-full h-80 object-contain mb-2"
-                />
-                <h3 className="text-sm font-medium line-clamp-2 mb-1">
-                  {prod.title}
-                </h3>
-                <div className="text-red-500 font-semibold">${prod.price}</div>
-              </div>
-            ))}
-          </div>
-      </section>
+      </section> */}
     </div>
   );
 }

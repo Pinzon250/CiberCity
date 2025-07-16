@@ -20,7 +20,7 @@ import {
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Home", active: true },
+  { href: "#", label: "Inicio", active: true },
   { href: "#", label: "Features" },
   { href: "#", label: "Pricing" },
   { href: "#", label: "About" },
@@ -30,7 +30,7 @@ export default function Component() {
   const id = useId()
 
   return (
-    <header className="border-b px-4 md:px-6">
+    <header className="border-b bg-zinc-100 px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex flex-1 items-center gap-2">
